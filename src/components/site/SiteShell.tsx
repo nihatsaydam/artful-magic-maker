@@ -6,6 +6,7 @@ import GrainOverlay from "@/components/site/GrainOverlay";
 import FloatingEditorCTA from "@/components/site/FloatingEditorCTA";
 import NewsletterBar from "@/components/site/NewsletterBar";
 import ScrollProgress from "@/components/site/ScrollProgress";
+import SectionDots from "@/components/site/SectionDots";
 
 export default function SiteShell({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function SiteShell({ children }: { children: ReactNode }) {
       <GrainOverlay />
       <CustomCursor />
       <SiteHeader />
+      <SectionDots />
       <main className="flex-1">{children}</main>
       <SiteFooter />
       <FloatingEditorCTA />
