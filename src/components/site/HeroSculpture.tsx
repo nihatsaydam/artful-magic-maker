@@ -32,8 +32,18 @@ function Sculpt({
 }) {
   const group = useRef<THREE.Group>(null);
   const coreMat = useRef<THREE.MeshStandardMaterial>(null);
-  const leftEye = useRef<THREE.MeshStandardMaterial>(null);
-  const rightEye = useRef<THREE.MeshStandardMaterial>(null);
+  const leftEye = useRef<THREE.Mesh>(null);
+  const rightEye = useRef<THREE.Mesh>(null);
+  const leftEyeMat = useRef<THREE.MeshStandardMaterial>(null);
+  const rightEyeMat = useRef<THREE.MeshStandardMaterial>(null);
+  const leftAngryEye = useRef<THREE.Mesh>(null);
+  const rightAngryEye = useRef<THREE.Mesh>(null);
+  const leftAngryMat = useRef<THREE.MeshStandardMaterial>(null);
+  const rightAngryMat = useRef<THREE.MeshStandardMaterial>(null);
+  const boltGroup = useRef<THREE.Group>(null);
+  const boltLeftMat = useRef<THREE.MeshStandardMaterial>(null);
+  const boltRightMat = useRef<THREE.MeshStandardMaterial>(null);
+  const angerLight = useRef<THREE.PointLight>(null);
   const t = useRef(0);
 
   useFrame((_, dt) => {
@@ -67,12 +77,48 @@ function Sculpt({
 
     // Anger glow flash on emissive materials
     const baseIntensity = 1.4;
-    const eyeBase = 3;
     const flash = a > 0 ? 1 + Math.sin(t.current * 22) * 0.5 * a + a * 1.2 : 1;
     if (coreMat.current) coreMat.current.emissiveIntensity = baseIntensity * flash;
-    if (leftEye.current) leftEye.current.emissiveIntensity = eyeBase * flash;
-    if (rightEye.current) rightEye.current.emissiveIntensity = eyeBase * flash;
+
+    // Eye swap: round glowing eyes fade out, flat angry slits fade in.
+    const calm = 1 - a;
+    if (leftEye.current) leftEye.current.visible = calm > 0.05;
+    if (rightEye.current) rightEye.current.visible = calm > 0.05;
+    if (leftEyeMat.current) leftEyeMat.current.emissiveIntensity = 3 * calm;
+    if (rightEyeMat.current) rightEyeMat.current.emissiveIntensity = 3 * calm;
+
+    if (leftAngryEye.current) {
+      leftAngryEye.current.visible = a > 0.05;
+      leftAngryEye.current.scale.x = 1 + a * 0.3;
+      leftAngryEye.current.scale.y = 0.4 + a * 0.6;
+    }
+    if (rightAngryEye.current) {
+      rightAngryEye.current.visible = a > 0.05;
+      rightAngryEye.current.scale.x = 1 + a * 0.3;
+      rightAngryEye.current.scale.y = 0.4 + a * 0.6;
+    }
+    if (leftAngryMat.current)
+      leftAngryMat.current.emissiveIntensity = 6 * a * (0.7 + Math.sin(t.current * 30) * 0.3);
+    if (rightAngryMat.current)
+      rightAngryMat.current.emissiveIntensity = 6 * a * (0.7 + Math.sin(t.current * 30) * 0.3);
+
+    // Lightning bolts above the head — only when angry, with strobe flicker.
+    if (boltGroup.current) {
+      boltGroup.current.visible = a > 0.05;
+      boltGroup.current.rotation.z = Math.sin(t.current * 14) * 0.15 * a;
+    }
+    const strobe = Math.random() > 0.35 ? 1 : 0.15;
+    if (boltLeftMat.current)
+      boltLeftMat.current.emissiveIntensity = 8 * a * strobe;
+    if (boltRightMat.current)
+      boltRightMat.current.emissiveIntensity =
+        8 * a * (Math.random() > 0.35 ? 1 : 0.15);
+
+    if (angerLight.current) {
+      angerLight.current.intensity = 4 * a * strobe;
+    }
   });
+
 
   return (
     <group ref={group}>
