@@ -21,6 +21,25 @@ const PALETTE = {
   envPreset: "night" as const,
 };
 
+/** Zig-zag lightning bolt extruded from a 2D shape. */
+function LightningGeometry() {
+  const shape = new THREE.Shape();
+  shape.moveTo(0, 0);
+  shape.lineTo(0.18, 0.0);
+  shape.lineTo(0.06, 0.32);
+  shape.lineTo(0.22, 0.32);
+  shape.lineTo(0.02, 0.78);
+  shape.lineTo(0.12, 0.42);
+  shape.lineTo(-0.04, 0.42);
+  shape.lineTo(0.04, 0.0);
+  shape.lineTo(0, 0);
+  return (
+    <extrudeGeometry
+      args={[shape, { depth: 0.04, bevelEnabled: false, steps: 1 }]}
+    />
+  );
+}
+
 function Sculpt({
   pointer,
   scroll,
