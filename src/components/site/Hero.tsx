@@ -20,7 +20,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative [clip-path:inset(0_0_-30%_0)]">
+    <section className="relative overflow-hidden">
       {/* BG */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img
@@ -56,12 +56,11 @@ export default function Hero() {
         />
       </div>
 
-      {/* Interactive 3D sculpture — extends below the hero so the orbiting ring
-          can spill into the next section, breaking the rigid banner edge. */}
-      <div className="absolute inset-x-0 top-0 -bottom-32 md:-bottom-48 z-[5] pointer-events-auto">
+      {/* Interactive 3D sculpture — sits between BG and text, follows the cursor */}
+      <div className="absolute inset-0 z-[5] pointer-events-auto">
         <HeroSculpture />
         {/* Soft fade so the 3D blends into the section edges */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(var(--background)/0.55)_88%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,hsl(var(--background)/0.65)_85%)]" />
       </div>
 
       <div className="relative z-10 site-container pt-10 pb-16 md:pt-14 md:pb-20 2xl:pt-20 2xl:pb-28 pointer-events-none">
