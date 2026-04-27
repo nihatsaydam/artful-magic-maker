@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import MagneticButton from "@/components/site/MagneticButton";
 import HeroSculpture from "@/components/site/HeroSculpture";
 import LiveStats from "@/components/site/LiveStats";
+import ScrollIndicator from "@/components/site/ScrollIndicator";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const ROTATING = ["worlds", "creatures", "vehicles", "characters", "props"];
@@ -147,6 +148,8 @@ export default function Hero() {
           </motion.div>
         </motion.div>
       </div>
+
+      <ScrollIndicator />
     </section>
   );
 }

@@ -10,6 +10,7 @@ import BlogSection from "@/components/site/BlogSection";
 import FAQSection from "@/components/site/FAQSection";
 import CreditsSection from "@/components/site/CreditsSection";
 import FinalCTA from "@/components/site/FinalCTA";
+import SectionDivider from "@/components/site/SectionDivider";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,14 +29,23 @@ function Index() {
     <SiteShell>
       <h1 className="sr-only">CRUDE 3D — AI-native sculpting & rendering studio</h1>
       <Hero />
+      <div className="site-container"><SectionDivider /></div>
       <HowItWorksSection />
+      <div className="site-container"><SectionDivider /></div>
       <GallerySection preview />
+      <div className="site-container"><SectionDivider /></div>
       <FeaturedArtistsSection />
+      <div className="site-container"><SectionDivider /></div>
       <TestimonialsSection />
+      <div className="site-container"><SectionDivider /></div>
       <RoadmapSection />
+      <div className="site-container"><SectionDivider /></div>
       <BlogSection />
+      <div className="site-container"><SectionDivider /></div>
       <CreditsSection />
+      <div className="site-container"><SectionDivider /></div>
       <FinalCTA />
+      <div className="site-container"><SectionDivider /></div>
       <FAQSection />
     </SiteShell>
   );
