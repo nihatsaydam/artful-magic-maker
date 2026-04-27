@@ -91,7 +91,11 @@ export default function GallerySection({ preview = false }: Props) {
   }, [active, preview]);
 
   return (
-    <section id="gallery" className="relative">
+    <section
+      id="gallery"
+      data-label={active === "All" ? "Gallery" : `Gallery · ${active}`}
+      className="relative"
+    >
       <GradientMesh variant="a" />
       <div className="site-container py-20 relative">
         {/* Header row — Tripo-style toolbar */}
