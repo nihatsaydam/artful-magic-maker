@@ -25,14 +25,14 @@ export default function CreditsSection() {
               <span className="text-xs font-mono uppercase tracking-widest text-primary">/ your balance</span>
               <div className="mt-4 flex items-baseline gap-3">
                 <Coins className="h-8 w-8 text-primary" />
-                <span className="text-5xl font-bold tabular-nums">{(total - used).toLocaleString()}</span>
+                <span className="text-5xl font-bold tabular-nums">{(total - used).toLocaleString("en-US")}</span>
                 <span className="text-muted-foreground">credits remaining</span>
               </div>
 
               <div className="mt-8">
                 <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
                   <span>Monthly usage</span>
-                  <span className="font-mono">{used.toLocaleString()} / {total.toLocaleString()}</span>
+                  <span className="font-mono">{used.toLocaleString("en-US")} / {total.toLocaleString("en-US")}</span>
                 </div>
                 <div className="h-2 rounded-full bg-surface-2 overflow-hidden">
                   <div

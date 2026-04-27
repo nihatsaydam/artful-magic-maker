@@ -34,7 +34,7 @@ export default function SiteFooter() {
       </div>
       <div className="border-t border-border/60">
         <div className="site-container py-4 flex items-center justify-between text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} CRUDE 3D Studio. All rights reserved.</span>
+          <span>© 2026 CRUDE 3D Studio. All rights reserved.</span>
           <span className="font-mono">v0.1 — preview build</span>
         </div>
       </div>
