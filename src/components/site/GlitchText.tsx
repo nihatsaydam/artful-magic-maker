@@ -38,6 +38,6 @@ export default function GlitchText({
           </span>
         </>
       )}
-    </Tag>
+    </span>
   );
 }
