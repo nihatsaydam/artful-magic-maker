@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
-import ContextualCursor from "@/components/site/ContextualCursor";
+import CustomCursor from "@/components/site/CustomCursor";
 import GrainOverlay from "@/components/site/GrainOverlay";
 import FloatingEditorCTA from "@/components/site/FloatingEditorCTA";
 import NewsletterBar from "@/components/site/NewsletterBar";
@@ -21,7 +21,7 @@ export default function SiteShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen w-full bg-background text-foreground flex flex-col relative">
       <ScrollProgress />
       <GrainOverlay />
-      <ContextualCursor />
+      <CustomCursor />
       <SiteHeader />
       <SectionDots />
       <main className="flex-1">{children}</main>

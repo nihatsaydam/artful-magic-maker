@@ -91,11 +91,7 @@ export default function GallerySection({ preview = false }: Props) {
   }, [active, preview]);
 
   return (
-    <section
-      id="gallery"
-      data-label={active === "All" ? "Gallery" : `Gallery · ${active}`}
-      className="relative"
-    >
+    <section id="gallery" className="relative">
       <GradientMesh variant="a" />
       <div className="site-container py-20 relative">
         {/* Header row — Tripo-style toolbar */}
@@ -115,7 +111,6 @@ export default function GallerySection({ preview = false }: Props) {
                   <button
                     key={key}
                     onClick={() => setActive(key)}
-                    data-cursor="Filter"
                     className={`inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full text-xs font-medium border whitespace-nowrap transition-all ${
                       isActive
                         ? "bg-foreground text-background border-foreground"

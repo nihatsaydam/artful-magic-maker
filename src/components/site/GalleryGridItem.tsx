@@ -41,7 +41,6 @@ function TiltCard({ item, onOpen, index }: { item: Item; onOpen: () => void; ind
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       onClick={onOpen}
-      data-cursor="View"
       style={{ rotateX, rotateY, transformStyle: "preserve-3d", perspective: 1000 }}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}

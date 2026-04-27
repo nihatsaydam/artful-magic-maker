@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MagneticButton from "@/components/site/MagneticButton";
-import SparkButton from "@/components/site/SparkButton";
 import HeroSculpture from "@/components/site/HeroSculpture";
 import LiveStats from "@/components/site/LiveStats";
 import ScrollIndicator from "@/components/site/ScrollIndicator";
@@ -108,19 +107,17 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.25 }}
             className="mt-10 flex flex-wrap items-center justify-center gap-4 pointer-events-auto"
           >
-            <SparkButton>
-              <MagneticButton strength={0.4}>
-                <Link to="/edit" data-cursor="Click">
-                  <Button
-                    size="lg"
-                    className="h-12 px-6 bg-primary hover:bg-primary/90 text-primary-foreground gap-2 shadow-[0_0_30px_hsl(var(--primary)/0.45)]"
-                  >
-                    Launch Editor
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </MagneticButton>
-            </SparkButton>
+            <MagneticButton strength={0.4}>
+              <Link to="/edit">
+                <Button
+                  size="lg"
+                  className="h-12 px-6 bg-primary hover:bg-primary/90 text-primary-foreground gap-2 shadow-[0_0_30px_hsl(var(--primary)/0.45)]"
+                >
+                  Launch Editor
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </MagneticButton>
             <MagneticButton strength={0.3}>
               <Link to="/gallery">
                 <Button

@@ -1,6 +1,5 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Wand2, Boxes, Download } from "lucide-react";
+import { motion } from "framer-motion";
+import { Wand2, Boxes, Download, ArrowRight } from "lucide-react";
 import GradientMesh from "@/components/site/GradientMesh";
 
 const STEPS = [
@@ -10,7 +9,7 @@ const STEPS = [
     title: "Prompt",
     sub: "Describe it",
     body: "Type a few words. Drop a reference. Pick a style. Our model parses intent in under a second.",
-    visual: "prompt" as const,
+    visual: "prompt",
   },
   {
     n: "02",
@@ -18,7 +17,7 @@ const STEPS = [
     title: "Sculpt",
     sub: "Refine in real-time",
     body: "Live PBR engine renders as you tweak. Push polys, paint materials, retopo with one click.",
-    visual: "sculpt" as const,
+    visual: "sculpt",
   },
   {
     n: "03",
@@ -26,20 +25,38 @@ const STEPS = [
     title: "Export",
     sub: "Ship anywhere",
     body: "GLB, FBX, USDZ. Production-ready geometry, baked maps, optimized for web, game, and film.",
-    visual: "export" as const,
+    visual: "export",
   },
 ];
 
-function StepVisual({ kind }: { kind: "prompt" | "sculpt" | "export" }) {
+function StepVisual({ kind, index }: { kind: string; index: number }) {
   if (kind === "prompt") {
     return (
-      <div className="relative h-64 w-full rounded-xl border border-border bg-background/60 p-5 overflow-hidden">
-        <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">
+      <div className="relative h-40 rounded-lg border border-border bg-background/60 p-4 overflow-hidden">
+        <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
           prompt.txt
         </div>
-        <div className="h-2 rounded-full bg-gradient-to-r from-primary to-primary/30 mb-2 w-[85%]" />
-        <div className="h-2 rounded-full bg-foreground/20 mb-2 w-[60%]" />
-        <div className="h-2 rounded-full bg-foreground/10 w-[40%]" />
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: "85%" }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.6, delay: 0.3 + index * 0.1, ease: "easeOut" }}
+          className="h-2 rounded-full bg-gradient-to-r from-primary to-primary/30 mb-2"
+        />
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: "60%" }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.4, delay: 0.6 + index * 0.1, ease: "easeOut" }}
+          className="h-2 rounded-full bg-foreground/20 mb-2"
+        />
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: "40%" }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, delay: 0.9 + index * 0.1, ease: "easeOut" }}
+          className="h-2 rounded-full bg-foreground/10"
+        />
         <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-[10px] text-primary">
           <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
           generating
@@ -49,21 +66,23 @@ function StepVisual({ kind }: { kind: "prompt" | "sculpt" | "export" }) {
   }
   if (kind === "sculpt") {
     return (
-      <div className="relative h-64 w-full rounded-xl border border-border bg-background/60 overflow-hidden">
-        <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(hsl(var(--foreground))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--foreground))_1px,transparent_1px)] [background-size:20px_20px]" />
+      <div className="relative h-40 rounded-lg border border-border bg-background/60 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-30 [background-image:linear-gradient(hsl(var(--foreground))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--foreground))_1px,transparent_1px)] [background-size:16px_16px]"
+        />
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
           className="absolute inset-0 grid place-items-center"
         >
-          <div className="h-28 w-28 rounded-2xl bg-gradient-to-br from-primary via-primary/70 to-primary/30 shadow-[0_0_60px_hsl(var(--primary)/0.5)]" />
+          <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-primary via-primary/70 to-primary/30 shadow-[0_0_40px_hsl(var(--primary)/0.5)]" />
         </motion.div>
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           className="absolute inset-0 grid place-items-center"
         >
-          <div className="h-40 w-40 rounded-full border border-primary/40" />
+          <div className="h-28 w-28 rounded-full border border-primary/40" />
         </motion.div>
         <div className="absolute bottom-3 left-3 text-[10px] text-muted-foreground">
           live · 60fps
@@ -72,20 +91,30 @@ function StepVisual({ kind }: { kind: "prompt" | "sculpt" | "export" }) {
     );
   }
   return (
-    <div className="relative h-64 w-full rounded-xl border border-border bg-background/60 p-5 overflow-hidden">
+    <div className="relative h-40 rounded-lg border border-border bg-background/60 p-4 overflow-hidden">
       <div className="grid grid-cols-3 gap-2">
-        {["GLB", "FBX", "USDZ"].map((fmt) => (
-          <div
+        {["GLB", "FBX", "USDZ"].map((fmt, i) => (
+          <motion.div
             key={fmt}
-            className="rounded-md border border-border bg-surface-1 p-3 text-center"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 + i * 0.12 }}
+            className="rounded-md border border-border bg-surface-1 p-2 text-center"
           >
             <div className="text-[10px] text-muted-foreground">.{fmt.toLowerCase()}</div>
             <div className="text-sm font-semibold text-foreground mt-1">{fmt}</div>
-          </div>
+          </motion.div>
         ))}
       </div>
-      <div className="absolute bottom-5 left-5 right-5 h-1 rounded-full bg-primary" />
-      <div className="absolute bottom-8 right-5 text-[10px] text-muted-foreground">
+      <motion.div
+        initial={{ width: "0%" }}
+        whileInView={{ width: "100%" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4, delay: 0.7 }}
+        className="absolute bottom-4 left-4 right-4 h-1 rounded-full bg-primary"
+      />
+      <div className="absolute bottom-7 right-4 text-[10px] text-muted-foreground">
         ready
       </div>
     </div>
@@ -93,127 +122,81 @@ function StepVisual({ kind }: { kind: "prompt" | "sculpt" | "export" }) {
 }
 
 export default function HowItWorksSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Move the horizontal track from 0 → -66.66% (3 panels, show 1 at a time).
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.666%"]);
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.05], [0.4, 1]);
-
   return (
-    <section id="how" data-label="How it works" className="relative">
+    <section id="how" className="relative py-20 md:py-28 2xl:py-36 overflow-hidden">
       <GradientMesh variant="b" />
 
-      {/* Tall scroll container — 3x viewport height drives the horizontal track */}
-      <div ref={containerRef} className="relative h-[300vh]">
-        <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
-          {/* Header */}
-          <div className="site-container pt-16 md:pt-20 shrink-0">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="max-w-3xl"
-            >
-              <div className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
-                How it works
-              </div>
-              <h2 className="display-heading text-3xl md:text-5xl 2xl:text-6xl leading-[1.05]">
-                <span className="light">From idea to</span> asset in{" "}
-                <span className="accent text-primary">three steps.</span>
-              </h2>
-            </motion.div>
-
-            {/* Progress dots */}
-            <motion.div
-              className="mt-6 flex items-center gap-2 text-xs text-muted-foreground"
-              style={{ opacity: headerOpacity }}
-            >
-              {STEPS.map((s, i) => {
-                const start = i / STEPS.length;
-                const end = (i + 1) / STEPS.length;
-                return (
-                  <ProgressDot
-                    key={s.n}
-                    progress={scrollYProgress}
-                    start={start}
-                    end={end}
-                    label={s.n}
-                  />
-                );
-              })}
-            </motion.div>
+      <div className="site-container relative">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl"
+        >
+          <div className="text-xs uppercase tracking-[0.2em] text-primary mb-4">
+            How it works
           </div>
+          <h2 className="display-heading text-3xl md:text-5xl 2xl:text-6xl leading-[1.05]">
+            <span className="light">From idea to</span> asset in{" "}
+            <span className="accent text-primary">three steps.</span>
+          </h2>
+          <p className="mt-4 text-base 2xl:text-lg text-muted-foreground max-w-xl">
+            No node graphs. No 40-button sculpt menus. Just prompt, refine, and ship.
+          </p>
+        </motion.div>
 
-          {/* Horizontal track */}
-          <div className="flex-1 flex items-center overflow-hidden">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 2xl:gap-8 relative">
+          {/* connector line */}
+          <div
+            aria-hidden
+            className="hidden md:block absolute top-12 left-[16%] right-[16%] h-px bg-gradient-to-r from-transparent via-border to-transparent"
+          />
+
+          {STEPS.map((step, i) => (
             <motion.div
-              style={{ x }}
-              className="flex w-[300%] h-full"
+              key={step.n}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.6, delay: i * 0.12, ease: "easeOut" }}
+              className="group relative"
             >
-              {STEPS.map((step) => (
-                <div
-                  key={step.n}
-                  className="w-1/3 h-full flex items-center justify-center px-6 md:px-12"
-                >
-                  <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-5xl w-full">
-                    {/* Visual */}
-                    <div>
-                      <StepVisual kind={step.visual} />
-                    </div>
-                    {/* Copy */}
-                    <div>
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="grid place-items-center h-12 w-12 rounded-full bg-primary/10 border border-primary/30 text-primary">
-                          <step.icon className="h-5 w-5" />
-                        </div>
-                        <div className="text-sm font-mono text-muted-foreground tracking-widest">
-                          {step.n} / 03
-                        </div>
-                      </div>
-                      <h3 className="display-heading text-4xl md:text-6xl leading-[1.05] mb-3">
-                        {step.title}{" "}
-                        <span className="accent text-primary">— {step.sub.toLowerCase()}</span>
-                      </h3>
-                      <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md">
-                        {step.body}
-                      </p>
-                    </div>
+              <div className="relative rounded-2xl border border-border bg-surface-1/70 backdrop-blur-sm p-6 2xl:p-8 hover:border-primary/40 transition-colors h-full flex flex-col">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="grid place-items-center h-10 w-10 rounded-full bg-primary/10 border border-primary/30 text-primary">
+                    <step.icon className="h-4 w-4" />
+                  </div>
+                  <div className="text-xs font-mono text-muted-foreground tracking-wider">
+                    {step.n}
                   </div>
                 </div>
-              ))}
+
+                <StepVisual kind={step.visual} index={i} />
+
+                <div className="mt-5">
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="text-xl 2xl:text-2xl font-bold text-foreground">
+                      {step.title}
+                    </h3>
+                    <span className="text-xs text-muted-foreground">— {step.sub}</span>
+                  </div>
+                  <p className="mt-2 text-sm 2xl:text-base text-muted-foreground leading-relaxed">
+                    {step.body}
+                  </p>
+                </div>
+              </div>
+
+              {/* arrow between cards */}
+              {i < STEPS.length - 1 && (
+                <div className="hidden md:grid place-items-center absolute top-1/2 -right-3 z-10 h-6 w-6 rounded-full bg-background border border-border text-muted-foreground">
+                  <ArrowRight className="h-3 w-3" />
+                </div>
+              )}
             </motion.div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function ProgressDot({
-  progress,
-  start,
-  end,
-  label,
-}: {
-  progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  start: number;
-  end: number;
-  label: string;
-}) {
-  const opacity = useTransform(progress, [start - 0.05, start, end, end + 0.05], [0.3, 1, 1, 0.3]);
-  const width = useTransform(progress, [start, end], [12, 36]);
-  return (
-    <motion.div style={{ opacity }} className="flex items-center gap-2">
-      <motion.span
-        style={{ width }}
-        className="h-1 rounded-full bg-primary"
-      />
-      <span className="font-mono">{label}</span>
-    </motion.div>
   );
 }
