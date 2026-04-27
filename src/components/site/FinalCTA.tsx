@@ -101,5 +101,6 @@ export default function FinalCTA() {
         </motion.div>
       </div>
     </section>
+    </Spotlight>
   );
 }
