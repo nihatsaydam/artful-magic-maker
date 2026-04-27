@@ -172,9 +172,13 @@ export default function GallerySection({ preview = false }: Props) {
             )}
           </AnimatePresence>
 
-          {filtered.map((item, i) => (
-            <GalleryGridItem key={item.id} item={item} index={i} />
-          ))}
+          {loading
+            ? Array.from({ length: preview ? 8 : 10 }).map((_, i) => (
+                <GalleryCardSkeleton key={`skl-${i}`} />
+              ))
+            : filtered.map((item, i) => (
+                <GalleryGridItem key={item.id} item={item} index={i} />
+              ))}
         </motion.div>
 
         {preview && (

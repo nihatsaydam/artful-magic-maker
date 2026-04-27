@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { ArrowRight, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import GradientMesh from "@/components/site/GradientMesh";
+import BlogCardSkeleton from "@/components/site/BlogCardSkeleton";
 
 const POSTS = [
   {
@@ -27,6 +29,12 @@ const POSTS = [
 ];
 
 export default function BlogSection() {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <section className="relative bg-surface-0/40 border-y border-border/60 overflow-hidden">
       <GradientMesh variant="b" />
