@@ -5,6 +5,7 @@ import CustomCursor from "@/components/site/CustomCursor";
 import GrainOverlay from "@/components/site/GrainOverlay";
 import FloatingEditorCTA from "@/components/site/FloatingEditorCTA";
 import NewsletterBar from "@/components/site/NewsletterBar";
+import ScrollProgress from "@/components/site/ScrollProgress";
 
 export default function SiteShell({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function SiteShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground flex flex-col relative">
+      <ScrollProgress />
       <GrainOverlay />
       <CustomCursor />
       <SiteHeader />
