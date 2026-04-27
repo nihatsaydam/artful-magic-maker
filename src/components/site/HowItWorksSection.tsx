@@ -101,6 +101,7 @@ export default function HowItWorksSection() {
 
   // Move the horizontal track from 0 → -66.66% (3 panels, show 1 at a time).
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-66.666%"]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.05], [0.4, 1]);
 
   return (
     <section id="how" data-label="How it works" className="relative">
@@ -130,7 +131,7 @@ export default function HowItWorksSection() {
             {/* Progress dots */}
             <motion.div
               className="mt-6 flex items-center gap-2 text-xs text-muted-foreground"
-              style={{ opacity: useTransform(scrollYProgress, [0, 0.05], [0.4, 1]) }}
+              style={{ opacity: headerOpacity }}
             >
               {STEPS.map((s, i) => {
                 const start = i / STEPS.length;
