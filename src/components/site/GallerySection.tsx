@@ -115,6 +115,7 @@ export default function GallerySection({ preview = false }: Props) {
                   <button
                     key={key}
                     onClick={() => setActive(key)}
+                    data-cursor="Filter"
                     className={`inline-flex items-center gap-1.5 h-9 px-3.5 rounded-full text-xs font-medium border whitespace-nowrap transition-all ${
                       isActive
                         ? "bg-foreground text-background border-foreground"
