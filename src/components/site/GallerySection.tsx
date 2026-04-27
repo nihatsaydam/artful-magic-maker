@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   SlidersHorizontal, LayoutGrid, Printer, Star,
@@ -7,6 +7,7 @@ import {
 import { Link } from "@tanstack/react-router";
 import GradientMesh from "@/components/site/GradientMesh";
 import GalleryGridItem from "@/components/site/GalleryGridItem";
+import GalleryCardSkeleton from "@/components/site/GalleryCardSkeleton";
 import shopImg from "@/assets/shop-card.jpg";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
@@ -70,6 +71,19 @@ interface Props {
 
 export default function GallerySection({ preview = false }: Props) {
   const [active, setActive] = useState<Cat>("All");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 600);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Re-trigger skeleton briefly on category change for premium feel
+  useEffect(() => {
+    setLoading(true);
+    const t = setTimeout(() => setLoading(false), 350);
+    return () => clearTimeout(t);
+  }, [active]);
 
   const filtered = useMemo(() => {
     const list = active === "All" ? ITEMS : ITEMS.filter((i) => i.cats.includes(active));
