@@ -49,9 +49,9 @@ export default function FAQSection() {
             <div className="text-xs uppercase tracking-[0.2em] text-primary mb-4">
               Frequently asked
             </div>
-            <h2 className="text-3xl md:text-5xl 2xl:text-6xl font-bold tracking-tight">
-              Everything you'd{" "}
-              <span className="italic font-serif font-normal text-primary">
+            <h2 className="display-heading text-3xl md:text-5xl 2xl:text-6xl leading-[1.05]">
+              <span className="light">Everything you'd</span>{" "}
+              <span className="accent text-primary">
                 ask the founders.
               </span>
             </h2>

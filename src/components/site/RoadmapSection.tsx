@@ -97,9 +97,9 @@ export default function RoadmapSection() {
           <div className="text-xs uppercase tracking-[0.2em] text-primary mb-4">
             Roadmap · changelog
           </div>
-          <h2 className="text-3xl md:text-5xl 2xl:text-6xl font-bold tracking-tight">
+          <h2 className="display-heading text-3xl md:text-5xl 2xl:text-6xl leading-[1.05]">
             Built in the open,{" "}
-            <span className="italic font-serif font-normal text-primary">
+            <span className="accent text-primary">
               shipped weekly.
             </span>
           </h2>

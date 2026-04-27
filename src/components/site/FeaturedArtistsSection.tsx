@@ -157,9 +157,9 @@ export default function FeaturedArtistsSection() {
             <div className="text-xs uppercase tracking-[0.2em] text-primary mb-4">
               Featured artists
             </div>
-            <h2 className="text-3xl md:text-5xl 2xl:text-6xl font-bold tracking-tight">
-              Sculptors shaping{" "}
-              <span className="italic font-serif font-normal text-primary">
+            <h2 className="display-heading text-3xl md:text-5xl 2xl:text-6xl leading-[1.05]">
+              <span className="light">Sculptors shaping</span>{" "}
+              <span className="accent text-primary">
                 the studio.
               </span>
             </h2>
