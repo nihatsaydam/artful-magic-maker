@@ -7,17 +7,15 @@ import { useState, type ReactNode } from "react";
 export default function GlitchText({
   children,
   className = "",
-  as: Tag = "span",
 }: {
   children: ReactNode;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
 }) {
   const [hover, setHover] = useState(false);
   const text = typeof children === "string" ? children : "";
 
   return (
-    <Tag
+    <span
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className={`relative inline-block ${className}`}
