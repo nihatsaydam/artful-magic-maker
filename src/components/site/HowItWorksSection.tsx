@@ -131,7 +131,7 @@ export default function HowItWorksSection() {
             {/* Progress dots */}
             <motion.div
               className="mt-6 flex items-center gap-2 text-xs text-muted-foreground"
-              style={{ opacity: useTransform(scrollYProgress, [0, 0.05], [0.4, 1]) }}
+              style={{ opacity: headerOpacity }}
             >
               {STEPS.map((s, i) => {
                 const start = i / STEPS.length;
