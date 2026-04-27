@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, ArrowRight } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const STORAGE_KEY = "crude3d-newsletter-dismissed";
 
@@ -25,11 +25,11 @@ export default function NewsletterBar() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.includes("@")) {
-      toast({ title: "Hmm, that email doesn't look right.", variant: "destructive" });
+      toast.error("Hmm, that email doesn't look right.");
       return;
     }
     setSubmitted(true);
-    toast({ title: "You're on the list ✨", description: "Studio updates land in your inbox monthly." });
+    toast.success("You're on the list ✨", { description: "Studio updates land in your inbox monthly." });
     setTimeout(dismiss, 1500);
   };
 
