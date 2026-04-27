@@ -1,10 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "@tanstack/react-router";
 import { Coins, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/site/ThemeToggle";
 
 export default function SiteHeader({ credits = 1280 }: { credits?: number }) {
-  const { pathname } = useLocation();
+  const pathname = useLocation({ select: (l) => l.pathname });
   const nav = [
     { to: "/", label: "Home" },
     { to: "/gallery", label: "Gallery" },

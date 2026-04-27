@@ -1,7 +1,7 @@
 import { useState, useRef, MouseEvent } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Heart, Bookmark, Sparkles, X, User as UserIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import {
   Dialog,
   DialogContent,

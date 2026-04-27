@@ -4,7 +4,7 @@ import {
   SlidersHorizontal, LayoutGrid, Printer, Star,
   User, Car, Cat, Building2, Sofa, Box, Sword, Shirt, Cog, UtensilsCrossed, Trees, Bone, Plus,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import GradientMesh from "@/components/site/GradientMesh";
 import GalleryGridItem from "@/components/site/GalleryGridItem";
 import shopImg from "@/assets/shop-card.jpg";

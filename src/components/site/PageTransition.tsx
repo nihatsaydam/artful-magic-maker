@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 
 export default function PageTransition({ children }: { children: ReactNode }) {
-  const { pathname } = useLocation();
+  const pathname = useLocation({ select: (l) => l.pathname });
   return (
     <motion.div
       key={pathname}

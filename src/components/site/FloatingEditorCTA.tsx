@@ -1,9 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
 export default function FloatingEditorCTA() {
-  const { pathname } = useLocation();
+  const pathname = useLocation({ select: (l) => l.pathname });
   // Hide on the editor itself & auth pages
   const hide = ["/edit", "/login", "/signup"].includes(pathname);
 
