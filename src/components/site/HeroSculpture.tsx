@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Float, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
@@ -9,77 +9,46 @@ import * as THREE from "three";
  * Features:
  *  - Cursor-tracked spring rotation
  *  - Scroll-driven scale + extra rotation (the sculpt "docks" upward as you scroll)
- *  - Time-of-day theme cycling (night → twilight → dawn) drives light colors
+ *  - Idle "anger" outburst after 5s of no pointer movement (shake + flash)
  */
 
-type TimeTheme = {
-  name: "night" | "twilight" | "dawn";
-  rim: string; // warm rim light color
-  fill: string; // cool fill light color
-  point: string; // accent point light
-  emissive: string; // inner core / eyes / ring emissive
-  envPreset: "night" | "sunset" | "dawn";
+// Original night palette (restored).
+const PALETTE = {
+  rim: "#ff3040",
+  fill: "#5060ff",
+  point: "#ff2030",
+  emissive: "#ff1525",
+  envPreset: "night" as const,
 };
-
-const THEMES: TimeTheme[] = [
-  {
-    name: "night",
-    rim: "#ff3040",
-    fill: "#5060ff",
-    point: "#ff2030",
-    emissive: "#ff1525",
-    envPreset: "night",
-  },
-  {
-    name: "twilight",
-    rim: "#ff5e7a",
-    fill: "#7a5cff",
-    point: "#ff4060",
-    emissive: "#ff3a5c",
-    envPreset: "sunset",
-  },
-  {
-    name: "dawn",
-    rim: "#ffb27a",
-    fill: "#ff7aa8",
-    point: "#ff7050",
-    emissive: "#ff6a4a",
-    envPreset: "dawn",
-  },
-];
-
-// Smoothly interpolate between hex colors.
-function lerpHex(a: string, b: string, t: number): string {
-  const ah = parseInt(a.slice(1), 16);
-  const bh = parseInt(b.slice(1), 16);
-  const ar = (ah >> 16) & 255;
-  const ag = (ah >> 8) & 255;
-  const ab = ah & 255;
-  const br = (bh >> 16) & 255;
-  const bg = (bh >> 8) & 255;
-  const bb = bh & 255;
-  const r = Math.round(ar + (br - ar) * t);
-  const g = Math.round(ag + (bg - ag) * t);
-  const b2 = Math.round(ab + (bb - ab) * t);
-  return `#${((1 << 24) | (r << 16) | (g << 8) | b2).toString(16).slice(1)}`;
-}
 
 function Sculpt({
   pointer,
   scroll,
-  emissive,
+  anger,
 }: {
   pointer: React.MutableRefObject<{ x: number; y: number }>;
   scroll: React.MutableRefObject<number>;
-  emissive: string;
+  anger: React.MutableRefObject<number>; // 0..1 ramp during outbursts
 }) {
   const group = useRef<THREE.Group>(null);
+  const coreMat = useRef<THREE.MeshStandardMaterial>(null);
+  const leftEye = useRef<THREE.MeshStandardMaterial>(null);
+  const rightEye = useRef<THREE.MeshStandardMaterial>(null);
+  const t = useRef(0);
 
   useFrame((_, dt) => {
     if (!group.current) return;
+    t.current += dt;
+
+    // Anger shake (decays with anger value)
+    const a = anger.current;
+    const shakeX = a > 0 ? Math.sin(t.current * 38) * 0.08 * a : 0;
+    const shakeY = a > 0 ? Math.cos(t.current * 44) * 0.08 * a : 0;
+    const shakeZ = a > 0 ? Math.sin(t.current * 30) * 0.05 * a : 0;
+
     // Spring toward pointer (normalized -1..1)
-    const targetY = pointer.current.x * 0.6;
-    const targetX = pointer.current.y * 0.35;
+    const targetY = pointer.current.x * 0.6 + shakeY;
+    const targetX = pointer.current.y * 0.35 + shakeX;
     group.current.rotation.y +=
       (targetY - group.current.rotation.y) * Math.min(1, dt * 3.5);
     group.current.rotation.x +=
@@ -89,15 +58,25 @@ function Sculpt({
 
     // Scroll-driven: shrink + lift + extra tilt as the page scrolls.
     const s = scroll.current; // 0..1
-    const scale = 1 - s * 0.45; // 1 → 0.55
-    group.current.scale.setScalar(scale);
-    group.current.position.y = s * 0.6; // lift up
-    group.current.rotation.z = s * 0.35; // gentle dutch tilt
+    const scaleBase = 1 - s * 0.45; // 1 → 0.55
+    const angerPulse = a > 0 ? 1 + Math.sin(t.current * 18) * 0.04 * a : 1;
+    group.current.scale.setScalar(scaleBase * angerPulse);
+    group.current.position.y = s * 0.6;
+    group.current.position.x = shakeX * 0.5;
+    group.current.rotation.z = s * 0.35 + shakeZ;
+
+    // Anger glow flash on emissive materials
+    const baseIntensity = 1.4;
+    const eyeBase = 3;
+    const flash = a > 0 ? 1 + Math.sin(t.current * 22) * 0.5 * a + a * 1.2 : 1;
+    if (coreMat.current) coreMat.current.emissiveIntensity = baseIntensity * flash;
+    if (leftEye.current) leftEye.current.emissiveIntensity = eyeBase * flash;
+    if (rightEye.current) rightEye.current.emissiveIntensity = eyeBase * flash;
   });
 
   return (
     <group ref={group}>
-      {/* Core skull/helmet — low-poly icosahedron with subtle distortion */}
+      {/* Core skull/helmet */}
       <mesh castShadow receiveShadow>
         <icosahedronGeometry args={[1.15, 1]} />
         <MeshDistortMaterial
@@ -110,12 +89,13 @@ function Sculpt({
         />
       </mesh>
 
-      {/* Inner glowing core (visible through the faceted cracks) */}
+      {/* Inner glowing core */}
       <mesh scale={0.78}>
         <icosahedronGeometry args={[1, 0]} />
         <meshStandardMaterial
-          color={emissive}
-          emissive={emissive}
+          ref={coreMat}
+          color={PALETTE.emissive}
+          emissive={PALETTE.emissive}
           emissiveIntensity={1.4}
           roughness={0.4}
           metalness={0.2}
@@ -128,7 +108,7 @@ function Sculpt({
         <meshStandardMaterial color="#0d0d0d" roughness={0.3} metalness={0.9} />
       </mesh>
 
-      {/* Side horns (samurai-style) */}
+      {/* Side horns */}
       <mesh position={[-0.95, 0.55, 0]} rotation={[0, 0, 0.9]} castShadow>
         <coneGeometry args={[0.14, 0.55, 6]} />
         <meshStandardMaterial color="#0d0d0d" roughness={0.3} metalness={0.9} />
@@ -142,8 +122,9 @@ function Sculpt({
       <mesh position={[-0.32, 0.05, 1.0]}>
         <sphereGeometry args={[0.11, 12, 12]} />
         <meshStandardMaterial
-          color={emissive}
-          emissive={emissive}
+          ref={leftEye}
+          color={PALETTE.emissive}
+          emissive={PALETTE.emissive}
           emissiveIntensity={3}
           toneMapped={false}
         />
@@ -151,19 +132,20 @@ function Sculpt({
       <mesh position={[0.32, 0.05, 1.0]}>
         <sphereGeometry args={[0.11, 12, 12]} />
         <meshStandardMaterial
-          color={emissive}
-          emissive={emissive}
+          ref={rightEye}
+          color={PALETTE.emissive}
+          emissive={PALETTE.emissive}
           emissiveIntensity={3}
           toneMapped={false}
         />
       </mesh>
 
-      {/* Decorative orbiting ring */}
+      {/* Decorative orbiting rings */}
       <mesh rotation={[Math.PI / 2.4, 0, 0.4]}>
         <torusGeometry args={[1.55, 0.018, 8, 64]} />
         <meshStandardMaterial
-          color={emissive}
-          emissive={emissive}
+          color={PALETTE.emissive}
+          emissive={PALETTE.emissive}
           emissiveIntensity={1.2}
           roughness={0.3}
           metalness={0.6}
@@ -173,7 +155,7 @@ function Sculpt({
         <torusGeometry args={[1.7, 0.012, 8, 64]} />
         <meshStandardMaterial
           color="#ffffff"
-          emissive={emissive}
+          emissive={PALETTE.emissive}
           emissiveIntensity={0.6}
           roughness={0.4}
           metalness={0.5}
@@ -186,11 +168,11 @@ function Sculpt({
 function Scene({
   pointer,
   scroll,
-  theme,
+  anger,
 }: {
   pointer: React.MutableRefObject<{ x: number; y: number }>;
   scroll: React.MutableRefObject<number>;
-  theme: TimeTheme;
+  anger: React.MutableRefObject<number>;
 }) {
   return (
     <>
@@ -198,17 +180,17 @@ function Scene({
       <directionalLight
         position={[4, 3, 5]}
         intensity={1.2}
-        color={theme.rim}
+        color={PALETTE.rim}
         castShadow
       />
-      <directionalLight position={[-5, -2, -3]} intensity={0.5} color={theme.fill} />
-      <pointLight position={[0, 0, 3]} intensity={1.2} color={theme.point} distance={6} />
+      <directionalLight position={[-5, -2, -3]} intensity={0.5} color={PALETTE.fill} />
+      <pointLight position={[0, 0, 3]} intensity={1.2} color={PALETTE.point} distance={6} />
 
       <Float floatIntensity={0.6} rotationIntensity={0.2} speed={1.2}>
-        <Sculpt pointer={pointer} scroll={scroll} emissive={theme.emissive} />
+        <Sculpt pointer={pointer} scroll={scroll} anger={anger} />
       </Float>
 
-      <Environment preset={theme.envPreset} />
+      <Environment preset={PALETTE.envPreset} />
     </>
   );
 }
@@ -216,17 +198,31 @@ function Scene({
 export default function HeroSculpture() {
   const pointer = useRef({ x: 0, y: 0 });
   const scroll = useRef(0);
+  const anger = useRef(0);
+  const lastMove = useRef(performance.now());
+  const outburstUntil = useRef(0);
 
-  // Time theme cycles every ~9s with smooth interpolation.
-  const [progress, setProgress] = useState(0); // 0..THEMES.length (loops)
-
+  // Idle detection — trigger an "anger" outburst after 5s without movement.
   useEffect(() => {
     let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const elapsedSec = (now - start) / 1000;
-      const cycleSec = 9; // seconds per theme
-      setProgress((elapsedSec / cycleSec) % THEMES.length);
+    const tick = () => {
+      const now = performance.now();
+      const idleMs = now - lastMove.current;
+
+      if (idleMs > 5000 && now > outburstUntil.current) {
+        // Start a ~1.4s outburst
+        outburstUntil.current = now + 1400;
+        // Reset idle clock so it can re-trigger after the next 5s of stillness
+        lastMove.current = now + 1400;
+      }
+
+      // Anger value ramps to 1 during outburst, decays after.
+      if (now < outburstUntil.current) {
+        anger.current = Math.min(1, anger.current + 0.08);
+      } else {
+        anger.current = Math.max(0, anger.current - 0.04);
+      }
+
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -238,30 +234,18 @@ export default function HeroSculpture() {
     const onScroll = () => {
       const max = window.innerHeight * 0.9;
       scroll.current = Math.min(1, Math.max(0, window.scrollY / max));
+      lastMove.current = performance.now();
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Interpolate between two themes for the current progress.
-  const i = Math.floor(progress) % THEMES.length;
-  const t = progress - Math.floor(progress);
-  const a = THEMES[i];
-  const b = THEMES[(i + 1) % THEMES.length];
-  const theme: TimeTheme = {
-    name: a.name,
-    envPreset: t < 0.5 ? a.envPreset : b.envPreset,
-    rim: lerpHex(a.rim, b.rim, t),
-    fill: lerpHex(a.fill, b.fill, t),
-    point: lerpHex(a.point, b.point, t),
-    emissive: lerpHex(a.emissive, b.emissive, t),
-  };
-
   const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     pointer.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     pointer.current.y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+    lastMove.current = performance.now();
   };
 
   const handleLeave = () => {
@@ -283,7 +267,7 @@ export default function HeroSculpture() {
         style={{ background: "transparent" }}
       >
         <Suspense fallback={null}>
-          <Scene pointer={pointer} scroll={scroll} theme={theme} />
+          <Scene pointer={pointer} scroll={scroll} anger={anger} />
         </Suspense>
       </Canvas>
     </div>
