@@ -38,6 +38,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "CRUDE 3D" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { property: "og:title", content: "CRUDE 3D — AI-native sculpting & rendering studio" },
+      { name: "twitter:title", content: "CRUDE 3D — AI-native sculpting & rendering studio" },
+      { property: "og:description", content: "Sculpt, texture and render 3D worlds with AI in your browser." },
+      { name: "twitter:description", content: "Sculpt, texture and render 3D worlds with AI in your browser." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9e6e1264-091d-4baa-a68e-9bfc6b65d113/id-preview-4a2ed1df--f8b45111-10a2-4a43-a8d0-4173ac1f590b.lovable.app-1777253846006.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9e6e1264-091d-4baa-a68e-9bfc6b65d113/id-preview-4a2ed1df--f8b45111-10a2-4a43-a8d0-4173ac1f590b.lovable.app-1777253846006.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
