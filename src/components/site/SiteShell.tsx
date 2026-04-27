@@ -21,7 +21,7 @@ export default function SiteShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen w-full bg-background text-foreground flex flex-col relative">
       <ScrollProgress />
       <GrainOverlay />
-      <CustomCursor />
+      <ContextualCursor />
       <SiteHeader />
       <SectionDots />
       <main className="flex-1">{children}</main>
