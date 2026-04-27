@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MagneticButton from "@/components/site/MagneticButton";
+import Spotlight from "@/components/site/Spotlight";
 
 export default function FinalCTA() {
   return (
-    <section className="relative py-24 md:py-32 2xl:py-40 overflow-hidden">
+    <Spotlight color="primary" size={720} intensity={0.4}>
+    <section id="cta" data-label="Get started" className="relative py-24 md:py-32 2xl:py-40 overflow-hidden">
       {/* Layered glow background */}
       <div aria-hidden className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.25),transparent_60%)]" />
@@ -99,5 +101,6 @@ export default function FinalCTA() {
         </motion.div>
       </div>
     </section>
+    </Spotlight>
   );
 }
