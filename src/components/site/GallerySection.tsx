@@ -161,7 +161,7 @@ export default function GallerySection({ preview = false }: Props) {
                 </span>
                 <div className="absolute inset-x-5 bottom-5">
                   <div className="text-2xl md:text-3xl font-extrabold leading-tight">
-                    <span className="text-yellow-400">3D FULL-COLORED</span>{" "}
+                    <span className="text-primary">3D FULL-COLORED</span>{" "}
                     <span className="text-foreground">PRINTING</span>
                   </div>
                   <button className="mt-3 inline-flex h-9 px-4 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 shadow-[0_0_18px_hsl(var(--primary)/0.4)]">
