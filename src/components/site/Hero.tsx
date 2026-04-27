@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MagneticButton from "@/components/site/MagneticButton";
+import SparkButton from "@/components/site/SparkButton";
 import HeroSculpture from "@/components/site/HeroSculpture";
 import LiveStats from "@/components/site/LiveStats";
 import ScrollIndicator from "@/components/site/ScrollIndicator";
