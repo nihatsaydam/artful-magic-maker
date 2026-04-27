@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
-import CustomCursor from "@/components/site/CustomCursor";
+import CustomCursor from "@/components/site/CustomCursor.tsx";
 import GrainOverlay from "@/components/site/GrainOverlay";
 import FloatingEditorCTA from "@/components/site/FloatingEditorCTA";
 import NewsletterBar from "@/components/site/NewsletterBar";
