@@ -1,26 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
+import SiteShell from "@/components/site/SiteShell";
+import Hero from "@/components/site/Hero";
+import HowItWorksSection from "@/components/site/HowItWorksSection";
+import FeaturedArtistsSection from "@/components/site/FeaturedArtistsSection";
+import TestimonialsSection from "@/components/site/TestimonialsSection";
+import GallerySection from "@/components/site/GallerySection";
+import RoadmapSection from "@/components/site/RoadmapSection";
+import BlogSection from "@/components/site/BlogSection";
+import FAQSection from "@/components/site/FAQSection";
+import CreditsSection from "@/components/site/CreditsSection";
+import FinalCTA from "@/components/site/FinalCTA";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "CRUDE 3D — AI-native sculpting & rendering studio" },
+      { name: "description", content: "Sculpt, texture and render 3D worlds with AI in your browser." },
+      { property: "og:title", content: "CRUDE 3D — AI-native sculpting & rendering studio" },
+      { property: "og:description", content: "Sculpt, texture and render 3D worlds with AI in your browser." },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <SiteShell>
+      <h1 className="sr-only">CRUDE 3D — AI-native sculpting & rendering studio</h1>
+      <Hero />
+      <HowItWorksSection />
+      <GallerySection preview />
+      <FeaturedArtistsSection />
+      <TestimonialsSection />
+      <RoadmapSection />
+      <BlogSection />
+      <CreditsSection />
+      <FinalCTA />
+      <FAQSection />
+    </SiteShell>
+  );
 }
