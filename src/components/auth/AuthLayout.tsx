@@ -32,8 +32,7 @@ export default function AuthLayout({ mode }: Props) {
     // TODO: connect to API. For now, just simulate.
     await new Promise((r) => setTimeout(r, 700));
     setLoading(false);
-    toast({
-      title: isSignup ? "Account placeholder created" : "Logged in (demo)",
+    toast.success(isSignup ? "Account placeholder created" : "Logged in (demo)", {
       description: "Hook this form up to your auth API to make it real.",
     });
   };
