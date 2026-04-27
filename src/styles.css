@@ -233,6 +233,33 @@
     100% { transform: translate(0, 0); }
   }
 
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 38s linear infinite;
+    will-change: transform;
+  }
+
+  /* Display heading mix — variable-weight sans + italic serif accent.
+     Use on section <h2> tags for richer typography hierarchy. */
+  .display-heading {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-feature-settings: "ss01", "cv11";
+  }
+  .display-heading .accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .display-heading .light {
+    font-weight: 300;
+    color: hsl(var(--muted-foreground));
+  }
+
   .site-container {
     width: 100%;
     margin-left: 0;
