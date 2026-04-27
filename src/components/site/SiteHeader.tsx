@@ -46,7 +46,7 @@ export default function SiteHeader({ credits = 1280 }: { credits?: number }) {
           {/* Credits */}
           <div className="hidden sm:flex items-center gap-2 h-9 px-3 rounded-full border border-border bg-surface-1/80">
             <Coins className="h-4 w-4 text-primary" />
-            <span className="text-sm font-mono tabular-nums text-foreground">{credits.toLocaleString()}</span>
+            <span className="text-sm font-mono tabular-nums text-foreground">{credits.toLocaleString("en-US")}</span>
             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">credits</span>
           </div>
 
