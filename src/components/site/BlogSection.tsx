@@ -50,27 +50,29 @@ export default function BlogSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {POSTS.map((p, i) => (
-            <motion.article
-              key={p.title}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6 }}
-              className="group rounded-xl border border-border bg-surface-1 p-6 hover:border-primary/40 transition-colors"
-            >
-              <span className="text-[10px] uppercase tracking-widest font-mono text-primary">{p.cat}</span>
-              <h3 className="mt-3 text-lg font-semibold text-foreground leading-snug group-hover:text-primary transition-colors">
-                {p.title}
-              </h3>
-              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.excerpt}</p>
-              <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
-                <span>{p.date}</span>
-                <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {p.read}</span>
-              </div>
-            </motion.article>
-          ))}
+          {loading
+            ? Array.from({ length: 3 }).map((_, i) => <BlogCardSkeleton key={`bsk-${i}`} />)
+            : POSTS.map((p, i) => (
+                <motion.article
+                  key={p.title}
+                  initial={{ opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -6 }}
+                  className="group rounded-xl border border-border bg-surface-1 p-6 hover:border-primary/40 transition-colors"
+                >
+                  <span className="text-[10px] uppercase tracking-widest font-mono text-primary">{p.cat}</span>
+                  <h3 className="mt-3 text-lg font-semibold text-foreground leading-snug group-hover:text-primary transition-colors">
+                    {p.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.excerpt}</p>
+                  <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
+                    <span>{p.date}</span>
+                    <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {p.read}</span>
+                  </div>
+                </motion.article>
+              ))}
         </div>
       </div>
     </section>
