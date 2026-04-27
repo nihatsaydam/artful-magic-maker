@@ -164,27 +164,94 @@ function Sculpt({
         <meshStandardMaterial color="#0d0d0d" roughness={0.3} metalness={0.9} />
       </mesh>
 
-      {/* Glowing eye sockets */}
-      <mesh position={[-0.32, 0.05, 1.0]}>
+      {/* Glowing eye sockets (calm) */}
+      <mesh ref={leftEye} position={[-0.32, 0.05, 1.0]}>
         <sphereGeometry args={[0.11, 12, 12]} />
         <meshStandardMaterial
-          ref={leftEye}
+          ref={leftEyeMat}
           color={PALETTE.emissive}
           emissive={PALETTE.emissive}
           emissiveIntensity={3}
           toneMapped={false}
         />
       </mesh>
-      <mesh position={[0.32, 0.05, 1.0]}>
+      <mesh ref={rightEye} position={[0.32, 0.05, 1.0]}>
         <sphereGeometry args={[0.11, 12, 12]} />
         <meshStandardMaterial
-          ref={rightEye}
+          ref={rightEyeMat}
           color={PALETTE.emissive}
           emissive={PALETTE.emissive}
           emissiveIntensity={3}
           toneMapped={false}
         />
       </mesh>
+
+      {/* Angry slit eyes — flat narrow bars slanted inward (only visible during outburst) */}
+      <mesh
+        ref={leftAngryEye}
+        position={[-0.32, 0.07, 1.05]}
+        rotation={[0, 0, -0.45]}
+        visible={false}
+      >
+        <boxGeometry args={[0.28, 0.05, 0.02]} />
+        <meshStandardMaterial
+          ref={leftAngryMat}
+          color="#ffffff"
+          emissive={PALETTE.emissive}
+          emissiveIntensity={0}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh
+        ref={rightAngryEye}
+        position={[0.32, 0.07, 1.05]}
+        rotation={[0, 0, 0.45]}
+        visible={false}
+      >
+        <boxGeometry args={[0.28, 0.05, 0.02]} />
+        <meshStandardMaterial
+          ref={rightAngryMat}
+          color="#ffffff"
+          emissive={PALETTE.emissive}
+          emissiveIntensity={0}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* Lightning bolts crackling out of the head when angry */}
+      <group ref={boltGroup} visible={false}>
+        <mesh position={[-0.75, 1.55, 0.15]} rotation={[0, 0, 0.35]}>
+          <LightningGeometry />
+          <meshStandardMaterial
+            ref={boltLeftMat}
+            color="#ffffff"
+            emissive="#9bd4ff"
+            emissiveIntensity={0}
+            toneMapped={false}
+          />
+        </mesh>
+        <mesh
+          position={[0.75, 1.7, 0.15]}
+          rotation={[0, 0, -0.45]}
+          scale={[-1, 1, 1]}
+        >
+          <LightningGeometry />
+          <meshStandardMaterial
+            ref={boltRightMat}
+            color="#ffffff"
+            emissive="#c9b0ff"
+            emissiveIntensity={0}
+            toneMapped={false}
+          />
+        </mesh>
+        <pointLight
+          ref={angerLight}
+          position={[0, 1.6, 0.6]}
+          color="#a0c8ff"
+          intensity={0}
+          distance={5}
+        />
+      </group>
 
       {/* Decorative orbiting rings */}
       <mesh rotation={[Math.PI / 2.4, 0, 0.4]}>
