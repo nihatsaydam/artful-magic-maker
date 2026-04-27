@@ -16,9 +16,9 @@ const ARTISTS: Artist[] = [
     handle: "@yunaforge",
     studio: "Forge Atelier",
     works: [
-      { title: "Oni Mask", tone: "from-red-500 to-amber-600" },
+      { title: "Oni Mask", tone: "from-red-500 to-rose-700" },
       { title: "Helmet 04", tone: "from-rose-500 to-orange-500" },
-      { title: "Crown", tone: "from-amber-400 to-red-500" },
+      { title: "Crown", tone: "from-orange-400 to-red-500" },
     ],
   },
   {
@@ -67,8 +67,8 @@ const ARTISTS: Artist[] = [
     studio: "Cinder Co.",
     works: [
       { title: "Magma Core", tone: "from-orange-500 to-red-700" },
-      { title: "Ash Crow", tone: "from-amber-500 to-orange-700" },
-      { title: "Pyre", tone: "from-yellow-400 to-orange-600" },
+      { title: "Ash Crow", tone: "from-orange-500 to-red-700" },
+      { title: "Pyre", tone: "from-orange-400 to-rose-600" },
     ],
   },
 ];
@@ -157,9 +157,9 @@ export default function FeaturedArtistsSection() {
             <div className="text-xs uppercase tracking-[0.2em] text-primary mb-4">
               Featured artists
             </div>
-            <h2 className="text-3xl md:text-5xl 2xl:text-6xl font-bold tracking-tight">
-              Sculptors shaping{" "}
-              <span className="italic font-serif font-normal text-primary">
+            <h2 className="display-heading text-3xl md:text-5xl 2xl:text-6xl leading-[1.05]">
+              <span className="light">Sculptors shaping</span>{" "}
+              <span className="accent text-primary">
                 the studio.
               </span>
             </h2>

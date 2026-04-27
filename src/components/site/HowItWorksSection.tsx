@@ -137,9 +137,9 @@ export default function HowItWorksSection() {
           <div className="text-xs uppercase tracking-[0.2em] text-primary mb-4">
             How it works
           </div>
-          <h2 className="text-3xl md:text-5xl 2xl:text-6xl font-bold tracking-tight">
-            From idea to asset in{" "}
-            <span className="italic font-serif font-normal text-primary">three steps.</span>
+          <h2 className="display-heading text-3xl md:text-5xl 2xl:text-6xl leading-[1.05]">
+            <span className="light">From idea to</span> asset in{" "}
+            <span className="accent text-primary">three steps.</span>
           </h2>
           <p className="mt-4 text-base 2xl:text-lg text-muted-foreground max-w-xl">
             No node graphs. No 40-button sculpt menus. Just prompt, refine, and ship.
