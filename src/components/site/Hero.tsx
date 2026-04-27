@@ -20,7 +20,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden">
+    <section id="hero" data-label="Home" className="relative overflow-hidden">
       {/* BG */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img
