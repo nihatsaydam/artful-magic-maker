@@ -1,11 +1,11 @@
 import { ReactNode, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useRouter } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import heroBg from "@/assets/hero-bg.jpg";
 
 interface Props {
@@ -14,8 +14,8 @@ interface Props {
 
 export default function AuthLayout({ mode }: Props) {
   const isSignup = mode === "signup";
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const router = useRouter();
+  
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -90,7 +90,7 @@ export default function AuthLayout({ mode }: Props) {
       <section className="relative flex flex-col">
         <div className="p-6 flex items-center justify-between">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => router.history.back()}
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-4 w-4" /> Back
